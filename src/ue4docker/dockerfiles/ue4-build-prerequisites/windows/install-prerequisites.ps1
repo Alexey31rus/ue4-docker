@@ -57,33 +57,9 @@ Copy-Item -Path "*\x64\vulkan-1.dll" -Destination C:\Windows\System32\
 $visual_studio_build = $args[0]
 $unreal_engine_version = $args[1]
 
-Write-Output "UE version: $unreal_engine_version"
-
-if ($visual_studio_build -eq "15")
-{
-    $windows_sdk_version = 18362
-    $windows_os_version = "Windows10SDK"
-}
-else
-{
-    $windows_sdk_version = 20348
-    $windows_os_version = "Windows10SDK"
-
-    # NOTE: See suggested components https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Config/Windows/Windows_SDK.json
-    if ($unreal_engine_version.StartsWith("5.4"))
-    {
-        Write-Output "Usage MSVC build tools for UE 5.4"
-        $windows_sdk_version = 22621
-        $vs_tools_version = "14.38.17.8"
-    }
-    elseif ($unreal_engine_version.StartsWith("5.5") -or $unreal_engine_version.StartsWith("5.6"))
-    {
-        Write-Output "Usage MSVC build tools for UE 5.5 or higher"
-        $windows_sdk_version = 22621
-        $windows_os_version = "Windows11SDK"
-        $vs_tools_version = "14.38.17.8"
-    }
-}
+$windows_sdk_version = 22621
+$windows_os_version = "Windows11SDK"
+$vs_tools_version = "14.38.17.8"
 
 # NOTE: We use the Visual Studio 2022 installer even for Visual Studio 2019 and 2017 here because the old (2017) installer now breaks
 Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
